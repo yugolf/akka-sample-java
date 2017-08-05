@@ -26,8 +26,6 @@ public class KitchenActor extends AbstractActor {
     public interface Request {
     }
 
-    ;
-
     public static class DripCoffee implements Request {
         private final int count;
 
@@ -97,14 +95,3 @@ public class KitchenActor extends AbstractActor {
     }
 }
 
-
-// キッチンアクターのコンパニオンオブジェクト
-//object KitchenActor {
-//  def props(offset: Int) = Props(classOf[KitchenActor], offset)
-
-//  // メッセージプロトコルの定義
-//  sealed trait Request
-//  case class DripCoffee(count: Int) extends Request
-//  case class BakeCake(count: Int) extends Request
-
-//}

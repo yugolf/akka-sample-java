@@ -20,13 +20,6 @@ class ApplicationMain {
         cashierActor.tell(new Order("Coffee", 2), ActorRef.noSender());
         cashierActor.tell(new Order("Coffee", 3), ActorRef.noSender());
 
-//        system.scheduler().schedule(Duration.create(0, "seconds"),
-//                Duration.create(1, "seconds"),
-//                cashierActor,
-//                new CashierActor.Order("Coffee", new Random().nextInt(9) + 1),
-//                system.dispatcher(),
-//                ActorRef.noSender());
-
         // 2秒後にシャットダウン
         system.scheduler().scheduleOnce(Duration.create(2, "seconds"), cashierActor, new CashierActor.Shutdown(), system.dispatcher(), ActorRef.noSender());
         Await.result(system.whenTerminated(), Duration.Inf());

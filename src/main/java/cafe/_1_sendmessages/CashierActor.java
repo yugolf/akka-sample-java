@@ -53,19 +53,4 @@ public class CashierActor extends AbstractActor {
                 })
                 .build();
     }
-
-//  def receive: Receive = {
-//    case Initialize =>
-//      log.info("starting akka cafe")
-//    case Order =>
-//      // CashierからBaristaにメッセージを送信
-//      val barista = createBarista()
-//      barista ! "coffee"            // String型
-//      barista ! 2                   // Int型
-//      barista ! BaristaActor.Order("coffee", 2)  // Order型
-//    case Shutdown =>
-//      log.info("terminating akka cafe")
-//      context.system.terminate()
-//  }
 }
-
