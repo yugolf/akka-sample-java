@@ -1,4 +1,4 @@
-name := """reactive-akka-sample-java"""
+name := """akka-sample-java"""
 
 version := "1.0"
 
