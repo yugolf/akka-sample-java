@@ -1,15 +1,13 @@
-package goticks._5_actorandthread;
-
+package goticks._1_sendmessages;
 
 import akka.actor.AbstractActor;
 import akka.actor.Props;
 import akka.event.Logging;
 import akka.event.LoggingAdapter;
 
-// バリスタアクター
-class TicketSeller extends AbstractActor {
-    static public Props props(int offset) {
-        return Props.create(TicketSeller.class, () -> new TicketSeller(offset));
+public class TicketSeller extends AbstractActor {
+    static public Props props() {
+        return Props.create(TicketSeller.class, () -> new TicketSeller());
     }
 
     public static class Order {
@@ -32,21 +30,16 @@ class TicketSeller extends AbstractActor {
 
     private LoggingAdapter log = Logging.getLogger(getContext().getSystem(), this);
 
-    private int orderCount; // 注文数
-
-    public TicketSeller(int offset) {
-        this.orderCount = offset;
+    public TicketSeller() {
     }
-
 
     @Override
     public Receive createReceive() {
         return receiveBuilder()
-                .match(Order.class, order -> {
-                    orderCount += order.count;  // 受信した注文数を加算
-                    log.info("Receive your order: {}, {}. The number of orders: {}", order.getEvent(), order.getCount(), orderCount);
-                    getSender().tell(new BoxOffice.OrderCompleted("Received your order."), getSender());
-                })
+                .match(String.class,
+                        s -> log.info("Received your order: {}", s)
+                )   // String型のメッセージを受信した場合
+                .match(Integer.class, s -> log.info("Received your order: {}", s))  // Int型のメッセージを受信した場合
                 .matchAny(c -> log.info("Received your order."))  // String型、Int型以外のメッセージを受信した場合
                 .build();
     }

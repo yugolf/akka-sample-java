@@ -6,7 +6,7 @@ import akka.actor.Props;
 import akka.event.Logging;
 import akka.event.LoggingAdapter;
 
-// バリスタアクター
+// チケット販売員
 class TicketSeller extends AbstractActorWithStash {
     static public Props props() {
         return Props.create(TicketSeller.class, () -> new TicketSeller());
@@ -72,7 +72,7 @@ class TicketSeller extends AbstractActorWithStash {
                     log.info("Receive your order: {}, {}. The number of orders: {} ", order.getEvent(), order.getCount(), orderCount);
                     getSender().tell(new BoxOffice.OrderCompleted("Received your order. Today's coffee is " + eventType.name + "."), getSelf());
                 })
-                .match(Close.class, close-> {
+                .match(Close.class, close -> {
                     getContext().unbecome();
                 })
                 .build();

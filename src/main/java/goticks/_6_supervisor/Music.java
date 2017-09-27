@@ -6,7 +6,7 @@ import akka.actor.Props;
 import akka.event.Logging;
 import akka.event.LoggingAdapter;
 
-// バリスタアクター
+// 音楽アクター
 class Music extends AbstractActor {
     static public Props props(int offset) {
         return Props.create(Music.class, () -> new Music(offset));

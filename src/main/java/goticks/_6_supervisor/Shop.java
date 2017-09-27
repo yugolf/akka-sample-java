@@ -6,7 +6,7 @@ import akka.actor.Props;
 import akka.event.Logging;
 import akka.event.LoggingAdapter;
 
-// カフェアクター
+// ショップアクター
 class Shop extends AbstractActor {
     static public Props props() {
         return Props.create(Shop.class, () -> new Shop());
@@ -75,7 +75,7 @@ class Shop extends AbstractActor {
                 .match(Initialize.class, initialize -> log.info("starting go ticks"))
                 .match(Order.class, order -> order.getProduct() instanceof Sports, order -> boxOffice.forward(new BoxOffice.OrderSports(order.getCount()), getContext()))
                 .match(Order.class, order -> order.getProduct() instanceof Music, order -> boxOffice.forward(new BoxOffice.OrderMusic(order.getCount()), getContext()))
-                .match(Order.class, order -> order.getProduct() instanceof SportsAndMusic, order -> boxOffice.forward(new BoxOffice.OrderSportsAndMusic(order.getCount(), order.getCount()*2), getContext()))
+                .match(Order.class, order -> order.getProduct() instanceof SportsAndMusic, order -> boxOffice.forward(new BoxOffice.OrderSportsAndMusic(order.getCount(), order.getCount() * 2), getContext()))
                 .match(Shutdown.class, shutdown -> {
                     log.info("terminating go ticks");
                     getContext().getSystem().terminate();

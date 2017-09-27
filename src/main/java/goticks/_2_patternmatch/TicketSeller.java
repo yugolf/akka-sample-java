@@ -5,7 +5,7 @@ import akka.actor.Props;
 import akka.event.Logging;
 import akka.event.LoggingAdapter;
 
-// バリスタアクター
+// チケット販売員
 class TicketSeller extends AbstractActor {
     static public Props props() {
         return Props.create(TicketSeller.class, () -> new TicketSeller());

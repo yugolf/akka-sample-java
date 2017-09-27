@@ -68,6 +68,7 @@ public class BoxOffice extends AbstractActor {
         public int getSports() {
             return sports;
         }
+
         public int getMusic() {
             return music;
         }

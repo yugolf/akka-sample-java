@@ -5,7 +5,7 @@ import akka.actor.Props;
 import akka.event.Logging;
 import akka.event.LoggingAdapter;
 
-// バリスタアクター
+// チケット販売員
 class TicketSeller extends AbstractActor {
     static public Props props() {
         return Props.create(TicketSeller.class, () -> new TicketSeller());
@@ -41,7 +41,7 @@ class TicketSeller extends AbstractActor {
                     // BoxOfficeからの応答を受け取ったときの振る舞い
                     log.info("Your order has been completed. (event: {}, count: {})", order.getEvent(), order.getCount());
                     // 送信元に注文に対する調理が完了したことを返す
-                   getSender().tell(new BoxOffice.OrderCompleted("ok"), getSender());
+                    getSender().tell(new BoxOffice.OrderCompleted("ok"), getSender());
                 })
                 .matchAny(c -> log.info("Received your order."))  // String型、Int型以外のメッセージを受信した場合
                 .build();
