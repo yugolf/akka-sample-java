@@ -1,4 +1,4 @@
-package goticks._8_fsm;
+package goticks.a4_become2_fsm;
 
 
 import akka.actor.AbstractActor;
@@ -6,7 +6,6 @@ import akka.actor.ActorRef;
 import akka.actor.Props;
 import akka.event.Logging;
 import akka.event.LoggingAdapter;
-import goticks._8_fsm.TicketSeller.EventType;
 
 public class BoxOffice extends AbstractActor {
     static public Props props() {

@@ -1,4 +1,4 @@
-package goticks._4_askpattern;
+package goticks.a2_send2_ask;
 
 import akka.actor.AbstractActor;
 import akka.actor.ActorRef;
@@ -21,41 +21,31 @@ public class BoxOffice extends AbstractActor {
         return Props.create(BoxOffice.class, () -> new BoxOffice());
     }
 
-    /**
-     * 初期化メッセージ
-     */
+    /** 初期化メッセージ */
     public static class Initialize {
         public Initialize() {
         }
     }
 
-    /**
-     * シャットダウンメッセージ
-     */
+    /** シャットダウンメッセージ */
     public static class Shutdown {
         public Shutdown() {
         }
     }
 
-    /**
-     * 注文メッセージ
-     */
+    /** 注文メッセージ */
     public static class Order {
         public Order() {
         }
     }
 
-    /**
-     * 複数注文メッセージ
-     */
+    /** 複数注文メッセージ */
     public static class Orders {
         public Orders() {
         }
     }
 
-    /**
-     * 注文完了メッセージ
-     */
+    /** 注文完了メッセージ */
     public static class OrderCompleted {
         private final String message;
 
@@ -73,9 +63,7 @@ public class BoxOffice extends AbstractActor {
     public BoxOffice() {
     }
 
-    /**
-     * 複数注文の完了メッセージ
-     */
+    /** 複数注文の完了メッセージ */
     public static class Result {
         private final OrderCompleted sports;
         private final OrderCompleted music;

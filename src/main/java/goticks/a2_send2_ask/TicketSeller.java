@@ -1,4 +1,4 @@
-package goticks._4_askpattern;
+package goticks.a2_send2_ask;
 
 import akka.actor.AbstractActor;
 import akka.actor.ActorRef;
@@ -12,7 +12,6 @@ import static akka.pattern.PatternsCS.ask;
 import static akka.pattern.PatternsCS.pipe;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
-import goticks._4_askpattern.BoxOffice.OrderCompleted;
 
 
 /** チケット販売員 */
@@ -59,6 +58,19 @@ class TicketSeller extends AbstractActor {
         }
     }
 
+    /** 注文完了メッセージ */
+    public static class OrderCompleted {
+        private final String message;
+
+        public OrderCompleted(String message) {
+            this.message = message;
+        }
+
+        public String getMessage() {
+            return message;
+        }
+    }
+
     private ActorRef sportsSeller = getContext().actorOf(SportsSeller.props(0), "sportsSeller");
     private ActorRef musicSeller = getContext().actorOf(MusicSeller.props(0), "musicSeller");
 
@@ -74,9 +86,7 @@ class TicketSeller extends AbstractActor {
                     log.info("Your order has been completed. (event: {}, count: {})", order.getEvent(), order.getCount());
                     getSender().tell(new BoxOffice.OrderCompleted("ok"), getSender());
                 })
-                .match(RequestMultiTickets.class, ticketRequests -> {
-                    requestMultiTickets(ticketRequests);
-                })
+                .match(RequestMultiTickets.class, this::requestMultiTickets)
                 .matchAny(c -> log.info("received unknown message."))
                 .build();
     }
@@ -103,7 +113,9 @@ class TicketSeller extends AbstractActor {
                         .thenApply(v -> {
                             OrderCompleted sports = (OrderCompleted) resultOfSports.join();
                             OrderCompleted music = (OrderCompleted) resultOfMusic.join();
-                            return new BoxOffice.Result(sports, music);
+                            return new BoxOffice.Result(
+                                    new BoxOffice.OrderCompleted(sports.getMessage()),
+                                    new BoxOffice.OrderCompleted(music.getMessage()));
                         });
 
         // メッセージの送信元に手配結果を通知

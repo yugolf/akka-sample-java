@@ -1,4 +1,4 @@
-package goticks._6_supervisor;
+package goticks.a3_supervisor;
 
 
 import akka.actor.AbstractActor;
@@ -41,7 +41,7 @@ class MusicSeller extends AbstractActor {
                     log.info("order:{}/{}", order.getCount(), orderCount);
                     if (order.getCount() > 5)
                         throw new TicketSeller.ExceededLimitException("The number of your orders: " + order.getCount());
-                    getSender().tell(new TicketSeller.OrderCompleted(
+                    getSender().tell(new BoxOffice.OrderCompleted(
                             "I'm a charge of Music events. Received your order!"), getSelf());
                 })
                 .build();

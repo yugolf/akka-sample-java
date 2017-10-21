@@ -1,4 +1,4 @@
-package goticks._6_supervisor;
+package goticks.a3_supervisor;
 
 import akka.actor.AbstractActor;
 import akka.actor.ActorRef;
@@ -6,23 +6,25 @@ import akka.actor.Props;
 import akka.event.Logging;
 import akka.event.LoggingAdapter;
 
-// ショップアクター
+/** 店舗 */
 class Shop extends AbstractActor {
     static public Props props() {
         return Props.create(Shop.class, () -> new Shop());
     }
 
-    // メッセージプロトコルの定義
+    /** 初期化メッセージ */
     public static class Initialize {
         public Initialize() {
         }
     }
 
+    /** シャットダウンメッセージ */
     public static class Shutdown {
         public Shutdown() {
         }
     }
 
+    /** 注文メッセージ */
     public static class Order {
         private final Product product;
         private final int count;
@@ -41,25 +43,21 @@ class Shop extends AbstractActor {
         }
     }
 
-    // 商品リスト
+    /** 商品リスト */
     public interface Product {
     }
 
+    /** スポーツチケット */
     public static class Sports implements Product {
         public Sports() {
         }
     }
 
+    /** 音楽チケット */
     public static class Music implements Product {
         public Music() {
         }
     }
-
-    public static class SportsAndMusic implements Product {
-        public SportsAndMusic() {
-        }
-    }
-
 
     private LoggingAdapter log = Logging.getLogger(getContext().getSystem(), this);
 

@@ -1,30 +1,19 @@
-package goticks._1_sendmessages;
+package goticks.a1_create;
 
 import akka.actor.AbstractActor;
 import akka.actor.Props;
 import akka.event.Logging;
 import akka.event.LoggingAdapter;
 
+// メッセージを受信したときの振る舞いを定義
 public class TicketSeller1 extends AbstractActor {
     static public Props props() {
         return Props.create(TicketSeller1.class, () -> new TicketSeller1());
     }
 
+    /** 注文メッセージ */
     public static class Order {
-        private final String event;
-        private final int count;
-
-        public Order(String event, int count) {
-            this.event = event;
-            this.count = count;
-        }
-
-        public String getEvent() {
-            return event;
-        }
-
-        public int getCount() {
-            return count;
+        public Order() {
         }
     }
 
@@ -32,7 +21,6 @@ public class TicketSeller1 extends AbstractActor {
 
     public TicketSeller1() {
     }
-
 
     @Override
     public Receive createReceive() {

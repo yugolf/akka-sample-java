@@ -1,4 +1,4 @@
-package goticks._4_askpattern;
+package goticks.a2_send2_ask;
 
 
 import akka.actor.AbstractActor;
@@ -39,9 +39,10 @@ class MusicSeller extends AbstractActor {
         return receiveBuilder()
                 .match(RequestTicket.class, order -> {
                     orderCount += order.getCount();  // 受信した注文数を加算
-                    log.info("Receive your order: Music {} tickets. The number of orders: {} ", order.getCount(), orderCount);
-                    getSender().tell(new BoxOffice.OrderCompleted("I'm a charge of Music events. Received your orders!"), getSelf());
-                })
+                    log.info("order:{}/{}", order.getCount(), orderCount);
+                    getSender().tell(new TicketSeller.OrderCompleted(
+                            "I'm a charge of Music events. Received your order!"), getSelf());
+           })
                 .build();
     }
 }

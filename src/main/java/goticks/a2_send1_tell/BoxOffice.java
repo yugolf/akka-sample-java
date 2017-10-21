@@ -1,4 +1,4 @@
-package goticks.a2_send;
+package goticks.a2_send1_tell;
 
 import akka.actor.AbstractActor;
 import akka.actor.ActorRef;

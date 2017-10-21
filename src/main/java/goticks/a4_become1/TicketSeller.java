@@ -1,4 +1,4 @@
-package goticks.a4_become;
+package goticks.a4_become1;
 
 
 import akka.actor.AbstractActor;
@@ -79,6 +79,7 @@ class TicketSeller extends AbstractActor {
                             getSelf());
                 })
                 .match(Close.class, close -> {
+                    log.info("-> Close");
                     getContext().unbecome();
                 })
                 .build();
@@ -91,6 +92,7 @@ class TicketSeller extends AbstractActor {
                     log.info("I'm closed.");
                 })
                 .match(Open.class, open -> {
+                    log.info("-> Open");
                     getContext().become(open(open.eventType));
                 })
                 .build();

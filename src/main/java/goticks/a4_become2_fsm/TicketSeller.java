@@ -1,4 +1,4 @@
-package goticks._8_fsm;
+package goticks.a4_become2_fsm;
 
 
 import akka.actor.AbstractFSMWithStash;
@@ -7,9 +7,9 @@ import akka.actor.Props;
 import akka.event.Logging;
 import akka.event.LoggingAdapter;
 
-import static goticks._8_fsm.State.Break;
-import static goticks._8_fsm.State.Open;
-import static goticks._8_fsm.State.Close;
+import static goticks.a4_become2_fsm.State.Break;
+import static goticks.a4_become2_fsm.State.Open;
+import static goticks.a4_become2_fsm.State.Close;
 
 
 /** 状態 */

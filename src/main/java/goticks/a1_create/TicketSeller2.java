@@ -1,4 +1,4 @@
-package goticks._1_sendmessages;
+package goticks.a1_create;
 
 import akka.actor.AbstractActor;
 import akka.actor.Props;
@@ -6,26 +6,15 @@ import akka.event.Logging;
 import akka.event.LoggingAdapter;
 import akka.japi.pf.ReceiveBuilder;
 
+// ReceiveBuilder の分割
 public class TicketSeller2 extends AbstractActor {
     static public Props props() {
         return Props.create(TicketSeller2.class, () -> new TicketSeller2());
     }
 
+    /** 注文メッセージ */
     public static class Order {
-        private final String event;
-        private final int count;
-
-        public Order(String event, int count) {
-            this.event = event;
-            this.count = count;
-        }
-
-        public String getEvent() {
-            return event;
-        }
-
-        public int getCount() {
-            return count;
+        public Order() {
         }
     }
 

@@ -1,4 +1,4 @@
-package goticks._8_fsm;
+package goticks.a4_become2_fsm;
 
 
 import akka.actor.ActorRef;
@@ -6,7 +6,7 @@ import akka.actor.ActorSystem;
 import com.typesafe.config.ConfigFactory;
 import scala.concurrent.duration.Duration;
 import scala.concurrent.Await;
-import goticks._8_fsm.BoxOffice.*;
+import goticks.a4_become2_fsm.BoxOffice.*;
 
 class ApplicationMain {
     public static void main(String args[]) throws Exception {

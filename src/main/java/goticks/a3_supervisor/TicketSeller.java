@@ -1,4 +1,4 @@
-package goticks._6_supervisor;
+package goticks.a3_supervisor;
 
 import akka.actor.*;
 import akka.event.Logging;
@@ -41,19 +41,6 @@ public class TicketSeller extends AbstractActor {
 
         public int getCount() {
             return count;
-        }
-    }
-
-    /** 注文完了メッセージ */
-    public static class OrderCompleted {
-        private final String message;
-
-        public OrderCompleted(String message) {
-            this.message = message;
-        }
-
-        public String getMessage() {
-            return message;
         }
     }
 

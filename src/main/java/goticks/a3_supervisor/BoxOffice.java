@@ -1,4 +1,4 @@
-package goticks._6_supervisor;
+package goticks.a3_supervisor;
 
 
 import akka.actor.AbstractActor;

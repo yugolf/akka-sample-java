@@ -1,31 +1,19 @@
-package goticks._1_sendmessages;
+package goticks.a1_create;
 
 import akka.actor.AbstractActor;
 import akka.actor.Props;
 import akka.event.Logging;
 import akka.event.LoggingAdapter;
-import akka.japi.pf.ReceiveBuilder;
 
+// 振る舞いを別メソッドに定義
 public class TicketSeller3 extends AbstractActor {
     static public Props props() {
         return Props.create(TicketSeller3.class, () -> new TicketSeller3());
     }
 
+    /** 注文メッセージ */
     public static class Order {
-        private final String event;
-        private final int count;
-
-        public Order(String event, int count) {
-            this.event = event;
-            this.count = count;
-        }
-
-        public String getEvent() {
-            return event;
-        }
-
-        public int getCount() {
-            return count;
+        public Order() {
         }
     }
 
@@ -43,17 +31,17 @@ public class TicketSeller3 extends AbstractActor {
                 .build();
     }
 
-    // String 型の場合
+    /** String 型の場合 */
     private void receiveString(String msg) {
         log.info("Received String message: {}", msg);
     }
 
-    // Integer 型の場合
+    /** Integer 型の場合 */
     private void receiveInteger(Integer msg) {
         log.info("Received Integer message: {}", msg);
     }
 
-    // それ以外の場合
+    /** それ以外の場合 */
     private void receiveAny(Object msg) {
         log.info("received unknown message");
     }

@@ -1,4 +1,4 @@
-package goticks._4_askpattern;
+package goticks.a2_send2_ask;
 
 
 import akka.actor.AbstractActor;
@@ -38,8 +38,9 @@ class SportsSeller extends AbstractActor {
         return receiveBuilder()
                 .match(RequestTicket.class, order -> {
                     orderCount += order.getCount();  // 受信した注文数を加算
-                    log.info("Receive your order: Sports {} tickets. The number of orders: {} ", order.getCount(), orderCount);
-                    getSender().tell(new BoxOffice.OrderCompleted("I'm a charge of Sports events. Received your orders!"), getSender());
+                    log.info("order:{}/{}", order.getCount(), orderCount);
+                    getSender().tell(new TicketSeller.OrderCompleted(
+                            "I'm a charge of Sports events. Received your order!"), getSelf());
                 })
                 .build();
     }
