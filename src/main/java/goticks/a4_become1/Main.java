@@ -7,7 +7,7 @@ import com.typesafe.config.ConfigFactory;
 import scala.concurrent.duration.Duration;
 import scala.concurrent.Await;
 
-class ApplicationMain {
+class Main {
     public static void main(String args[]) throws Exception {
 
         final ActorSystem system = ActorSystem.create("main", ConfigFactory.load("goticks"));

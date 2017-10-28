@@ -20,27 +20,27 @@ public class TicketSeller extends AbstractActor {
 
     /** スポーツチケットのリクエスト・メッセージ */
     public static class RequestSportsTicket{
-        private final int count;
+        private final int nrTickets;
 
-        public RequestSportsTicket(int count) {
-            this.count = count;
+        public RequestSportsTicket(int nrTickets) {
+            this.nrTickets = nrTickets;
         }
 
-        public int getCount() {
-            return count;
+        public int getNrTickets() {
+            return nrTickets;
         }
     }
 
     /** 音楽チケットのリクエスト・メッセージ */
     public static class RequestMusicTicket{
-        private final int count;
+        private final int nrTickets;
 
-        public RequestMusicTicket(int count) {
-            this.count = count;
+        public RequestMusicTicket(int nrTickets) {
+            this.nrTickets = nrTickets;
         }
 
-        public int getCount() {
-            return count;
+        public int getNrTickets() {
+            return nrTickets;
         }
     }
 
@@ -51,8 +51,8 @@ public class TicketSeller extends AbstractActor {
         }
     }
 
-    private ActorRef sportsSeller = getContext().actorOf(SportsSeller.props(0), "sportsSeller");
-    private ActorRef musicSeller = getContext().actorOf(MusicSeller.props(0), "musicSeller");
+    private ActorRef sportsSeller = getContext().actorOf(SportsSeller.props(20), "sportsSeller");
+    private ActorRef musicSeller = getContext().actorOf(MusicSeller.props(20), "musicSeller");
 
     private LoggingAdapter log = Logging.getLogger(getContext().getSystem(), this);
 
@@ -65,10 +65,10 @@ public class TicketSeller extends AbstractActor {
     public Receive createReceive() {
         return receiveBuilder()
                 .match(RequestSportsTicket.class, requestSportsTicket ->
-                        sportsSeller.forward(new SportsSeller.RequestTicket(requestSportsTicket.getCount()),
+                        sportsSeller.forward(new SportsSeller.RequestTicket(requestSportsTicket.getNrTickets()),
                                 getContext()))
                 .match(RequestMusicTicket.class, requestMusicTicket ->
-                        musicSeller.forward(new MusicSeller.RequestTicket(requestMusicTicket.getCount()),
+                        musicSeller.forward(new MusicSeller.RequestTicket(requestMusicTicket.getNrTickets()),
                                 getContext()))
                 .matchEquals("killSports", msg ->
                     getContext().stop(sportsSeller)

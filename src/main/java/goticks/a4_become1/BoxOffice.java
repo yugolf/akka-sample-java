@@ -46,19 +46,19 @@ public class BoxOffice extends AbstractActor {
     /** 注文メッセージ */
     public static class Order {
         private final String event;
-        private final int count;
+        private final int nrTickets;
 
-        public Order(String event, int count) {
+        public Order(String event, int nrTickets) {
             this.event = event;
-            this.count = count;
+            this.nrTickets = nrTickets;
         }
 
         public String getEvent() {
             return event;
         }
 
-        public int getCount() {
-            return count;
+        public int getNrTickets() {
+            return nrTickets;
         }
     }
 
@@ -107,7 +107,7 @@ public class BoxOffice extends AbstractActor {
                     ticketSeller.tell(new TicketSeller.Close(), getSelf());
                 })
                 .match(Order.class, order -> {
-                    ticketSeller.tell(new TicketSeller.Order(order.getEvent(), order.getCount()), getSelf());
+                    ticketSeller.tell(new TicketSeller.Order(order.getEvent(), order.getNrTickets()), getSelf());
                 })
                 .match(OrderCompleted.class, result -> log.info("result: {}", result.getMessage()))
                 .match(Shutdown.class, shutdown -> {

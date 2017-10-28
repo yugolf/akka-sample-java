@@ -8,7 +8,7 @@ import scala.concurrent.duration.Duration;
 import scala.concurrent.Await;
 import goticks.a4_become2_fsm.BoxOffice.*;
 
-class ApplicationMain {
+class Main {
     public static void main(String args[]) throws Exception {
 
         final ActorSystem system = ActorSystem.create("main", ConfigFactory.load("goticks"));
@@ -16,8 +16,8 @@ class ApplicationMain {
 
         boxOffice.tell(new Initialize(), ActorRef.noSender());
 
-        // 5秒後に中断
-        system.scheduler().scheduleOnce(Duration.create(5, "seconds"), boxOffice, new Break(), system.dispatcher(), ActorRef.noSender());
+        // 5秒後にクローズ
+        system.scheduler().scheduleOnce(Duration.create(5, "seconds"), boxOffice, new Close(), system.dispatcher(), ActorRef.noSender());
         // 10秒後にイベントをオープン
         system.scheduler().scheduleOnce(Duration.create(10, "seconds"), boxOffice, new Open(), system.dispatcher(), ActorRef.noSender());
 

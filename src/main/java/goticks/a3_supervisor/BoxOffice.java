@@ -8,8 +8,8 @@ import akka.event.Logging;
 import akka.event.LoggingAdapter;
 
 public class BoxOffice extends AbstractActor {
-    static public Props props(ActorRef kitchen) {
-        return Props.create(BoxOffice.class, () -> new BoxOffice(kitchen));
+    static public Props props(ActorRef boxOffice) {
+        return Props.create(BoxOffice.class, () -> new BoxOffice(boxOffice));
     }
 
     /** 注文完了メッセージ */
@@ -31,27 +31,27 @@ public class BoxOffice extends AbstractActor {
 
     /** スポーツチケットの注文メッセージ */
     public static class OrderSports implements Order {
-        private final int count;
+        private final int nrTickets;
 
-        public OrderSports(int count) {
-            this.count = count;
+        public OrderSports(int nrTickets) {
+            this.nrTickets = nrTickets;
         }
 
-        public int getCount() {
-            return count;
+        public int getNrTickets() {
+            return nrTickets;
         }
     }
 
     /** 音楽チケットの注文メッセージ */
     public static class OrderMusic implements Order {
-        private final int count;
+        private final int nrTickets;
 
-        public OrderMusic(int count) {
-            this.count = count;
+        public OrderMusic(int nrTickets) {
+            this.nrTickets = nrTickets;
         }
 
-        public int getCount() {
-            return count;
+        public int getNrTickets() {
+            return nrTickets;
         }
     }
 
@@ -66,10 +66,10 @@ public class BoxOffice extends AbstractActor {
     public Receive createReceive() {
         return receiveBuilder()
                 .match(OrderSports.class, order -> {
-                    ticketSeller.tell(new TicketSeller.RequestSportsTicket(order.getCount()), getSelf());
+                    ticketSeller.tell(new TicketSeller.RequestSportsTicket(order.getNrTickets()), getSelf());
                 })
                 .match(OrderMusic.class, order -> {
-                    ticketSeller.tell(new TicketSeller.RequestMusicTicket(order.getCount()), getSelf());
+                    ticketSeller.tell(new TicketSeller.RequestMusicTicket(order.getNrTickets()), getSelf());
                 })
                 .match(OrderCompleted.class, result -> log.info("result: {}", result.getMessage()))
                 .matchEquals("killSports", msg -> ticketSeller.tell("killSports", getSelf()))

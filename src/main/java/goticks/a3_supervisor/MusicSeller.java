@@ -14,35 +14,36 @@ class MusicSeller extends AbstractActor {
 
     /** チケットのリクエスト・メッセージ */
     public static class RequestTicket {
-        private final int count;
+        private final int nrTickets;
 
-        public RequestTicket(int count) {
-            this.count = count;
+        public RequestTicket(int nrTickets) {
+            this.nrTickets = nrTickets;
         }
 
-        public int getCount() {
-            return count;
+        public int getNrTickets() {
+            return nrTickets;
         }
     }
 
     private LoggingAdapter log = Logging.getLogger(getContext().getSystem(), this);
 
-    private int orderCount; // 注文数
+    /** チケット残数 */
+    private int rest;
 
     public MusicSeller(int offset) {
-        this.orderCount = offset;
+        this.rest = offset;
     }
 
     @Override
     public Receive createReceive() {
         return receiveBuilder()
                 .match(RequestTicket.class, order -> {
-                    orderCount += order.getCount();  // 受信した注文数を加算
-                    log.info("order:{}/{}", order.getCount(), orderCount);
-                    if (order.getCount() > 5)
-                        throw new TicketSeller.ExceededLimitException("The number of your orders: " + order.getCount());
+                    log.info("order:{}, rest:{}", order.getNrTickets(), rest - order.nrTickets);
+                    if (rest < order.getNrTickets())
+                        throw new TicketSeller.ExceededLimitException("no tickets.");
+                    rest -= order.getNrTickets();  // 受信した注文数をマイナス
                     getSender().tell(new BoxOffice.OrderCompleted(
-                            "I'm a charge of Music events. Received your order!"), getSelf());
+                            "I'm a charge of Music events. received your order!"), getSelf());
                 })
                 .build();
     }

@@ -15,19 +15,19 @@ class TicketSeller extends AbstractActor {
     /** 注文メッセージ */
     public static class Order {
         private final String event;
-        private final int count;
+        private final int nrTickets;
 
-        public Order(String event, int count) {
+        public Order(String event, int nrTickets) {
             this.event = event;
-            this.count = count;
+            this.nrTickets = nrTickets;
         }
 
         public String getEvent() {
             return event;
         }
 
-        public int getCount() {
-            return count;
+        public int getNrTickets() {
+            return nrTickets;
         }
     }
 
@@ -65,18 +65,25 @@ class TicketSeller extends AbstractActor {
 
     private LoggingAdapter log = Logging.getLogger(getContext().getSystem(), this);
 
-    /** 注文数 */
-    private int orderCount = 0;
+    /** チケット残数 */
+    private int rest = 10;
 
     final Receive open(final EventType eventType) {
         // オープ状態の振る舞い
         return receiveBuilder()
                 .match(Order.class, order -> {
-                    orderCount += order.getCount();
-                    log.info("order: {}/{}, sum: {}",
-                            order.getEvent(), order.getCount(), orderCount);
-                    getSender().tell(new BoxOffice.OrderCompleted("Received your order:" + eventType.name),
-                            getSelf());
+                    if(rest >= order.getNrTickets()) {
+                        rest -= order.getNrTickets();
+                        log.info("order: {}/{}, rest: {}",
+                                order.getEvent(), order.getNrTickets(), rest);
+                        getSender().tell(new BoxOffice.OrderCompleted("received your order:" + eventType.name),
+                                getSelf());
+                    } else {
+                        log.info("order: {}/{}, no tickets",
+                                order.getEvent(), order.getNrTickets());
+                        getSender().tell(new BoxOffice.OrderCompleted("no tickets." + eventType.name),
+                                getSelf());
+                    }
                 })
                 .match(Close.class, close -> {
                     log.info("-> Close");

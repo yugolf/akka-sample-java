@@ -23,19 +23,19 @@ class TicketSeller extends AbstractActor {
     /** 注文メッセージ */
     public static class Order {
         private final String event;
-        private final int count;
+        private final int nrTickets;
 
-        public Order(String event, int count) {
+        public Order(String event, int nrTickets) {
             this.event = event;
-            this.count = count;
+            this.nrTickets = nrTickets;
         }
 
         public String getEvent() {
             return event;
         }
 
-        public int getCount() {
-            return count;
+        public int getNrTickets() {
+            return nrTickets;
         }
     }
 
@@ -71,8 +71,8 @@ class TicketSeller extends AbstractActor {
         }
     }
 
-    private ActorRef sportsSeller = getContext().actorOf(SportsSeller.props(0), "sportsSeller");
-    private ActorRef musicSeller = getContext().actorOf(MusicSeller.props(0), "musicSeller");
+    private ActorRef sportsSeller = getContext().actorOf(SportsSeller.props(10), "sportsSeller");
+    private ActorRef musicSeller = getContext().actorOf(MusicSeller.props(10), "musicSeller");
 
     private LoggingAdapter log = Logging.getLogger(getContext().getSystem(), this);
 
@@ -83,7 +83,7 @@ class TicketSeller extends AbstractActor {
     public Receive createReceive() {
         return receiveBuilder()
                 .match(Order.class, order -> {
-                    log.info("Your order has been completed. (event: {}, count: {})", order.getEvent(), order.getCount());
+                    log.info("your order has been completed. (event: {}, nrTickets: {})", order.getEvent(), order.getNrTickets());
                     getSender().tell(new BoxOffice.OrderCompleted("ok"), getSender());
                 })
                 .match(RequestMultiTickets.class, this::requestMultiTickets)

@@ -27,19 +27,19 @@ class Shop extends AbstractActor {
     /** 注文メッセージ */
     public static class Order {
         private final Product product;
-        private final int count;
+        private final int nrTickets;
 
-        public Order(Product product, int count) {
+        public Order(Product product, int nrTickets) {
             this.product = product;
-            this.count = count;
+            this.nrTickets = nrTickets;
         }
 
         public Product getProduct() {
             return product;
         }
 
-        public int getCount() {
-            return count;
+        public int getNrTickets() {
+            return nrTickets;
         }
     }
 
@@ -71,8 +71,8 @@ class Shop extends AbstractActor {
     public Receive createReceive() {
         return receiveBuilder()
                 .match(Initialize.class, initialize -> log.info("starting go ticks"))
-                .match(Order.class, order -> order.getProduct() instanceof Sports, order -> boxOffice.forward(new BoxOffice.OrderSports(order.getCount()), getContext()))
-                .match(Order.class, order -> order.getProduct() instanceof Music, order -> boxOffice.forward(new BoxOffice.OrderMusic(order.getCount()), getContext()))
+                .match(Order.class, order -> order.getProduct() instanceof Sports, order -> boxOffice.forward(new BoxOffice.OrderSports(order.getNrTickets()), getContext()))
+                .match(Order.class, order -> order.getProduct() instanceof Music, order -> boxOffice.forward(new BoxOffice.OrderMusic(order.getNrTickets()), getContext()))
                 .match(Shutdown.class, shutdown -> {
                     log.info("terminating go ticks");
                     getContext().getSystem().terminate();

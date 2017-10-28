@@ -14,19 +14,19 @@ class TicketSeller extends AbstractActor {
     /** 注文メッセージ */
     public static class Order {
         private final String event;
-        private final int count;
+        private final int nrTickets;
 
-        public Order(String event, int count) {
+        public Order(String event, int nrTickets) {
             this.event = event;
-            this.count = count;
+            this.nrTickets = nrTickets;
         }
 
         public String getEvent() {
             return event;
         }
 
-        public int getCount() {
-            return count;
+        public int getNrTickets() {
+            return nrTickets;
         }
     }
 
@@ -40,7 +40,7 @@ class TicketSeller extends AbstractActor {
         return receiveBuilder()
                 .match(Order.class, order -> {
                     // 注文を受けたときの振る舞い
-                    log.info("Your order has been completed. (product: {}, count: {})", order.getEvent(), order.getCount());
+                    log.info("your order has been completed. (product: {}, nrTickets: {})", order.getEvent(), order.getNrTickets());
                     // 送信元に注文処理が完了したことを返す
                     getSender().tell(new BoxOffice.OrderCompleted("OK"), getSender());
                 })

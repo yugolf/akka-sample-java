@@ -29,12 +29,12 @@ public class TicketSeller2 extends AbstractActor {
 
         // String 型の場合
         builder.match(String.class, msg -> {
-            log.info("Received String message: {}", msg);
+            log.info("received String message: {}", msg);
         });
 
         // Integer 型の場合
         builder.match(Integer.class, msg -> {
-            log.info("Received Integer message: {}", msg);
+            log.info("received Integer message: {}", msg);
         });
 
         // それ以外の場合

@@ -22,15 +22,15 @@ interface Data {
 }
 
 final class StateData implements Data {
-    /** 注文数 */
-    private final int orderCount;
+    /** チケット残数 */
+    private final int rest;
 
-    public StateData(int orderCount) {
-        this.orderCount = orderCount;
+    public StateData(int rest) {
+        this.rest = rest;
     }
 
-    public int getOrderCount() {
-        return orderCount;
+    public int getRest() {
+        return rest;
     }
 }
 
@@ -40,22 +40,32 @@ public class TicketSeller extends AbstractFSMWithStash<State, Data> {
 
     {
         // オープン状態でスタート
-        startWith(Open, new StateData(0));
+        startWith(Open, new StateData(10));
 
         // オープン状態のときの振る舞い
         when(Open,
                 matchEvent(Order.class, StateData.class,
                         (order, state) -> {
-                            final int count = state.getOrderCount() + order.getCount();
-                            log.info("order: {}/{}, sum: {}",
-                                    order.getEvent(), order.getCount(), count);
-                            getSender().tell(new BoxOffice.OrderCompleted("Received your order."),
-                                    getSelf());
-                            // 状態はそのまま
-                            return stay().using(new StateData(count));
+                            final int rest = state.getRest() - order.getNrTickets();
+                            log.info("order: {}/{}, rest: {}",
+                                    order.getEvent(), order.getNrTickets(), rest);
+                            if (rest >= 0) {
+                                getSender().tell(new BoxOffice.OrderCompleted("received your order."),
+                                        getSelf());
+                                // 状態はそのまま、残数更新
+                                return stay().using(new StateData(rest));
+                            } else {
+                                getSender().tell(new BoxOffice.OrderCompleted("no tickets."),
+                                        getSelf());
+                                // 状態はそのまま、残数そのまま
+                                return stay();
+                            }
                         }
-                ).event(Break.class, StateData.class, (breaking, state) -> goTo(Break)
-                ).event(Close.class, StateData.class, (close, state) -> goTo(Close))
+                ).event(Close.class, StateData.class, (breaking, state) -> {
+                            if (state.getRest() <= 0) return goTo(Close);
+                            else return goTo(Break);
+                        }
+                )
         );
 
         // 中断状態のときの振る舞い
@@ -93,13 +103,13 @@ public class TicketSeller extends AbstractFSMWithStash<State, Data> {
         // 状態を遷移するときの振る舞い
         onTransition(
                 matchState(Open, Break, () ->
-                    log.info("status: Open -> Break")
+                        log.info("status: Open -> Break")
                 ).state(Break, Open, () -> {
                     log.info("status: Open -> Break");
                     // 蓄えたメッセージを開放
                     unstashAll();
                 }).state(Open, Close, () ->
-                    log.info("status: Open -> Close")
+                        log.info("status: Open -> Close")
                 ));
 
         initialize();
@@ -112,19 +122,19 @@ public class TicketSeller extends AbstractFSMWithStash<State, Data> {
     /** 注文メッセージ */
     public static class Order {
         private final String event;
-        private final int count;
+        private final int nrTickets;
 
-        public Order(String event, int count) {
+        public Order(String event, int nrTickets) {
             this.event = event;
-            this.count = count;
+            this.nrTickets = nrTickets;
         }
 
         public String getEvent() {
             return event;
         }
 
-        public int getCount() {
-            return count;
+        public int getNrTickets() {
+            return nrTickets;
         }
     }
 

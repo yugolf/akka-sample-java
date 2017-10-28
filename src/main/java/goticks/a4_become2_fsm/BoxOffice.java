@@ -30,12 +30,6 @@ public class BoxOffice extends AbstractActor {
         }
     }
 
-    /** 中断メッセージ */
-    public static class Break {
-        public Break() {
-        }
-    }
-
     /** クローズメッセージ */
     public static class Close {
         public Close() {
@@ -45,19 +39,19 @@ public class BoxOffice extends AbstractActor {
     /** 注文メッセージ */
     public static class Order {
         private final String event;
-        private final int count;
+        private final int nrTickets;
 
-        public Order(String event, int count) {
+        public Order(String event, int nrTickets) {
             this.event = event;
-            this.count = count;
+            this.nrTickets = nrTickets;
         }
 
         public String getEvent() {
             return event;
         }
 
-        public int getCount() {
-            return count;
+        public int getNrTickets() {
+            return nrTickets;
         }
     }
 
@@ -88,14 +82,11 @@ public class BoxOffice extends AbstractActor {
                 .match(Open.class, open -> {
                     ticketSeller.tell(new TicketSeller.Open(), getSelf());
                 })
-                .match(Break.class, o -> {
-                    ticketSeller.tell(new TicketSeller.Break(), getSelf());
-                })
-                .match(Close.class, o -> {
+                .match(Close.class, close -> {
                     ticketSeller.tell(new TicketSeller.Close(), getSelf());
                 })
                 .match(Order.class, order -> {
-                    ticketSeller.tell(new TicketSeller.Order(order.getEvent(), order.getCount()), getSelf());
+                    ticketSeller.tell(new TicketSeller.Order(order.getEvent(), order.getNrTickets()), getSelf());
                 })
                 .match(Shutdown.class, shutdown -> {
                     log.info("terminating go ticks");

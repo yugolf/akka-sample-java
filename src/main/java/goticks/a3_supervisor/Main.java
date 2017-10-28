@@ -7,7 +7,7 @@ import scala.concurrent.duration.Duration;
 import scala.concurrent.Await;
 import goticks.a3_supervisor.Shop.*;
 
-class ApplicationMain {
+class Main {
     public static void main(String args[]) throws Exception {
 
         final ActorSystem system = ActorSystem.create("main", ConfigFactory.load("goticks"));
@@ -18,7 +18,7 @@ class ApplicationMain {
 
         // 顧客からの注文
         shop.tell(new Order(new Sports(), 2), ActorRef.noSender());
-        shop.tell(new Order(new Music(), 6), ActorRef.noSender());
+        shop.tell(new Order(new Music(), 30), ActorRef.noSender());
         shop.tell(new Order(new Sports(), 1), ActorRef.noSender());
         shop.tell(new Order(new Music(), 2), ActorRef.noSender());
 

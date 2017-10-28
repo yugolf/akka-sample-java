@@ -33,12 +33,12 @@ public class TicketSeller3 extends AbstractActor {
 
     /** String 型の場合 */
     private void receiveString(String msg) {
-        log.info("Received String message: {}", msg);
+        log.info("received String message: {}", msg);
     }
 
     /** Integer 型の場合 */
     private void receiveInteger(Integer msg) {
-        log.info("Received Integer message: {}", msg);
+        log.info("received Integer message: {}", msg);
     }
 
     /** それ以外の場合 */

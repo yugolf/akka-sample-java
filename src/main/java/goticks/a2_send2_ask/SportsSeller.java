@@ -13,23 +13,24 @@ class SportsSeller extends AbstractActor {
     }
 
     public static class RequestTicket {
-        private final int count;
+        private final int nrTickets;
 
-        public RequestTicket(int count) {
-            this.count = count;
+        public RequestTicket(int nrTickets) {
+            this.nrTickets = nrTickets;
         }
 
-        public int getCount() {
-            return count;
+        public int getNrTickets() {
+            return nrTickets;
         }
     }
 
     private LoggingAdapter log = Logging.getLogger(getContext().getSystem(), this);
 
-    private int orderCount; // 注文数
+    /** チケット残数 */
+    private int rest;
 
     public SportsSeller(int offset) {
-        this.orderCount = offset;
+        this.rest = offset;
     }
 
 
@@ -37,10 +38,10 @@ class SportsSeller extends AbstractActor {
     public Receive createReceive() {
         return receiveBuilder()
                 .match(RequestTicket.class, order -> {
-                    orderCount += order.getCount();  // 受信した注文数を加算
-                    log.info("order:{}/{}", order.getCount(), orderCount);
+                    rest -= order.getNrTickets();  // 受信した注文数をマイナス
+                    log.info("order:{}, rest:{}", order.getNrTickets(), rest);
                     getSender().tell(new TicketSeller.OrderCompleted(
-                            "I'm a charge of Sports events. Received your order!"), getSelf());
+                            "I'm a charge of Sports events. received your order!"), getSelf());
                 })
                 .build();
     }

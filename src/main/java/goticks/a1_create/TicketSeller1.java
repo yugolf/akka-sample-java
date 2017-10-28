@@ -26,11 +26,11 @@ public class TicketSeller1 extends AbstractActor {
     public Receive createReceive() {
         return receiveBuilder()
                 // String 型のメッセージを受信した場合
-                .match(String.class, msg-> log.info("Received String message: {}", msg))
+                .match(String.class, msg-> log.info("received String message: {}", msg))
                 // Int 型のメッセージを受信した場合
-                .match(Integer.class, msg -> log.info("Received Integer message: {}", msg))
+                .match(Integer.class, msg -> log.info("received Integer message: {}", msg))
                 // String 型、Integer 型以外のメッセージを受信した場合
-                .matchAny(msg -> log.info("Received unknown message."))
+                .matchAny(msg -> log.info("received unknown message."))
                 .build();
     }
 }
